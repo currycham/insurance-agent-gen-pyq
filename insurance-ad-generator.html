@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保险产品宣传内容生成器</title>
+    <!-- 引入Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF', // 深蓝主色调，传达信任和专业
+                        secondary: '#3B82F6', // 中蓝辅助色
+                        accent: '#60A5FA', // 浅蓝强调色
+                        neutral: '#F3F4F6', // 浅灰背景色
+                        dark: '#1F2937', // 深色文本
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .transition-custom {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+    
+    <style>
+        /* 全局样式 */
+        body {
+            scroll-behavior: smooth;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .loading-spinner {
+            border-top-color: #1E40AF;
+            animation: spinner 0.8s linear infinite;
+        }
+        
+        @keyframes spinner {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 加载覆盖层 */
+        .loading-overlay {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-dark">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-md fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-shield text-primary text-2xl"></i>
+                <h1 class="text-xl md:text-2xl font-bold text-primary">保险宣传生成器</h1>
+            </div>
+            
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="#features" class="text-gray-600 hover:text-primary transition-custom">功能特点</a>
+                <a href="#generator" class="text-gray-600 hover:text-primary transition-custom">开始生成</a>
+                <a href="#examples" class="text-gray-600 hover:text-primary transition-custom">示例展示</a>
+            </nav>
+            
+            <button class="md:hidden text-gray-600 focus:outline-none" id="menu-toggle">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white shadow-lg absolute w-full" id="mobile-menu">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <a href="#features" class="text-gray-600 hover:text-primary py-2 transition-custom">功能特点</a>
+                <a href="#generator" class="text-gray-600 hover:text-primary py-2 transition-custom">开始生成</a>
+                <a href="#examples" class="text-gray-600 hover:text-primary py-2 transition-custom">示例展示</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-primary to-secondary text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h1 class="text-3xl md:text-5xl font-bold mb-6 text-shadow animate-fadeIn" style="animation-delay: 0.1s">
+                    轻松生成专业保险宣传内容
+                </h1>
+                <p class="text-lg md:text-xl opacity-90 mb-8 animate-fadeIn" style="animation-delay: 0.3s">
+                    输入产品信息，一键生成适合朋友圈的高质量宣传文案和图片，提升营销效果
+                </p>
+                <a href="#generator" class="inline-block bg-white text-primary font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-custom animate-fadeIn" style="animation-delay: 0.5s">
+                    立即开始 <i class="fa fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能特点区域 -->
+    <section id="features" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">强大功能，简单操作</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">我们的工具帮助保险从业者快速生成专业、吸引人的宣传内容，节省时间，提升转化率</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 功能卡片1 -->
+                <div class="bg-neutral rounded-xl p-6 shadow-md hover:shadow-lg transition-custom">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-file-text-o text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">智能文案生成</h3>
+                    <p class="text-gray-600">基于AI大模型，根据产品类型和核心数据，生成多种风格的宣传文案，贴合朋友圈传播特点</p>
+                </div>
+                
+                <!-- 功能卡片2 -->
+                <div class="bg-neutral rounded-xl p-6 shadow-md hover:shadow-lg transition-custom">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-picture-o text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">自动配图生成</h3>
+                    <p class="text-gray-600">根据产品特点和文案内容，智能生成或匹配适合的图片，图文结合提升宣传效果</p>
+                </div>
+                
+                <!-- 功能卡片3 -->
+                <div class="bg-neutral rounded-xl p-6 shadow-md hover:shadow-lg transition-custom">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa fa-refresh text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">灵活重新生成</h3>
+                    <p class="text-gray-600">可单独对文案或图片进行重新生成，满足个性化需求，打造完美宣传内容</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 生成器区域 -->
+    <section id="generator" class="py-16 bg-neutral">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">生成您的保险宣传内容</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">填写以下信息，我们将为您生成专业的保险产品宣传文案和图片</p>
+            </div>
+            
+            <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+                    <!-- 输入表单部分 -->
+                    <div class="p-6 md:p-8">
+                        <h3 class="text-xl font-semibold mb-6 text-primary">产品信息</h3>
+                        
+                        <form id="insurance-form" class="space-y-6">
+                            <!-- 产品类型 -->
+                            <div>
+                                <label for="product-type" class="block text-gray-700 font-medium mb-2">产品类型</label>
+                                <select id="product-type" name="product-type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                                    <option value="" disabled selected>请选择产品类型</option>
+                                    <option value="savings">储蓄险</option>
+                                    <option value="critical-illness">重疾险</option>
+                                    <option value="medical">医疗险</option>
+                                    <option value="life">寿险</option>
+                                    <option value="accident">意外险</option>
+                                    <option value="other">其他类型</option>
+                                </select>
+                            </div>
+                            
+                            <!-- 产品名称 -->
+                            <div>
+                                <label for="product-name" class="block text-gray-700 font-medium mb-2">产品名称</label>
+                                <input type="text" id="product-name" name="product-name" placeholder="例如：安康一生重疾险" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                            </div>
+                            
+                            <!-- 核心数据 - 保额 -->
+                            <div>
+                                <label for="coverage-amount" class="block text-gray-700 font-medium mb-2">保额 (元)</label>
+                                <input type="number" id="coverage-amount" name="coverage-amount" placeholder="例如：500000" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                            </div>
+                            
+                            <!-- 核心数据 - 保费 -->
+                            <div>
+                                <label for="premium" class="block text-gray-700 font-medium mb-2">保费 (元/年)</label>
+                                <input type="number" id="premium" name="premium" placeholder="例如：5000" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                            </div>
+                            
+                            <!-- 保障期限 -->
+                            <div>
+                                <label for="coverage-period" class="block text-gray-700 font-medium mb-2">保障期限</label>
+                                <select id="coverage-period" name="coverage-period" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                                    <option value="" disabled selected>请选择保障期限</option>
+                                    <option value="1-year">1年</option>
+                                    <option value="5-years">5年</option>
+                                    <option value="10-years">10年</option>
+                                    <option value="20-years">20年</option>
+                                    <option value="30-years">30年</option>
+                                    <option value="lifetime">终身</option>
+                                </select>
+                            </div>
+                            
+                            <!-- 保障内容 -->
+                            <div>
+                                <label for="coverage-content" class="block text-gray-700 font-medium mb-2">核心保障内容</label>
+                                <textarea id="coverage-content" name="coverage-content" rows="3" placeholder="例如：120种重疾+20种中症+30种轻症，多次赔付" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom"></textarea>
+                            </div>
+                            
+                            <!-- 语言风格 -->
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">语言风格</label>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-primary transition-custom">
+                                        <input type="radio" name="style" value="narrative" class="mr-2 text-primary">
+                                        <span>叙事型</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-primary transition-custom">
+                                        <input type="radio" name="style" value="comparative" class="mr-2 text-primary">
+                                        <span>对比型</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-primary transition-custom">
+                                        <input type="radio" name="style" value="numeric" class="mr-2 text-primary">
+                                        <span>数字型</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-primary transition-custom">
+                                        <input type="radio" name="style" value="emotional" class="mr-2 text-primary">
+                                        <span>情感型</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-primary transition-custom">
+                                        <input type="radio" name="style" value="professional" class="mr-2 text-primary">
+                                        <span>专业型</span>
+                                    </label>
+                                    <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-primary transition-custom">
+                                        <input type="radio" name="style" value="concise" class="mr-2 text-primary">
+                                        <span>简洁型</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 生成按钮 -->
+                            <button type="button" id="generate-btn" class="w-full bg-primary text-white font-semibold py-3 px-6 rounded-lg hover:bg-primary/90 transform hover:-translate-y-0.5 transition-custom flex items-center justify-center">
+                                <i class="fa fa-magic mr-2"></i> 生成宣传内容
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- 结果展示部分 -->
+                    <div class="p-6 md:p-8 bg-gray-50 border-t lg:border-t-0 lg:border-l border-gray-200">
+                        <h3 class="text-xl font-semibold mb-6 text-primary">生成结果</h3>
+                        
+                        <!-- 初始状态 -->
+                        <div id="result-initial" class="h-full flex flex-col items-center justify-center text-center p-4">
+                            <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                                <i class="fa fa-lightbulb-o text-primary text-3xl"></i>
+                            </div>
+                            <p class="text-gray-500 mb-2">填写产品信息并点击生成按钮</p>
+                            <p class="text-gray-400 text-sm">我们将为您生成专业的宣传文案和图片</p>
+                        </div>
+                        
+                        <!-- 加载状态 -->
+                        <div id="result-loading" class="h-full flex flex-col items-center justify-center hidden">
+                            <div class="w-12 h-12 border-4 border-gray-200 rounded-full loading-spinner mb-4"></div>
+                            <p class="text-gray-600">正在生成宣传内容，请稍候...</p>
+                        </div>
+                        
+                        <!-- 结果展示状态 -->
+                        <div id="result-content" class="h-full flex flex-col hidden">
+                            <!-- 文案部分 -->
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h4 class="font-medium text-gray-700">宣传文案</h4>
+                                    <button id="regenerate-copy-btn" class="text-primary hover:text-primary/80 text-sm flex items-center transition-custom">
+                                        <i class="fa fa-refresh mr-1"></i> 重新生成
+                                    </button>
+                                </div>
+                                <div id="generated-copy" class="bg-white p-4 rounded-lg border border-gray-200 min-h-[120px] relative">
+                                    <div id="copy-loading" class="hidden absolute inset-0 loading-overlay rounded-lg flex items-center justify-center">
+                                        <div class="w-8 h-8 border-4 border-gray-200 rounded-full loading-spinner"></div>
+                                    </div>
+                                </div>
+                                <button id="copy-btn" class="mt-2 text-primary hover:text-primary/80 text-sm flex items-center transition-custom">
+                                    <i class="fa fa-copy mr-1"></i> 复制文案
+                                </button>
+                            </div>
+                            
+                            <!-- 图片部分 -->
+                            <div class="flex-grow">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h4 class="font-medium text-gray-700">宣传图片</h4>
+                                    <button id="regenerate-image-btn" class="text-primary hover:text-primary/80 text-sm flex items-center transition-custom">
+                                        <i class="fa fa-refresh mr-1"></i> 重新生成
+                                    </button>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200 flex items-center justify-center min-h-[200px] relative">
+                                    <img id="generated-image" src="" alt="生成的保险宣传图片" class="max-w-full max-h-[200px] object-contain">
+                                    <div id="image-loading" class="hidden absolute inset-0 loading-overlay rounded-lg flex items-center justify-center">
+                                        <div class="w-8 h-8 border-4 border-gray-200 rounded-full loading-spinner"></div>
+                                    </div>
+                                </div>
+                                <button id="download-btn" class="mt-2 text-primary hover:text-primary/80 text-sm flex items-center transition-custom">
+                                    <i class="fa fa-download mr-1"></i> 下载图片
+                                </button>
+                            </div>
+                            
+                            <!-- 重新生成全部按钮 -->
+                            <button id="regenerate-all-btn" class="mt-6 w-full bg-primary text-white font-medium py-2 px-4 rounded-lg hover:bg-primary/90 transition-custom">
+                                <i class="fa fa-refresh mr-1"></i> 重新生成全部
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 示例展示区域 -->
+    <section id="examples" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">宣传内容示例</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">看看我们的工具能生成什么样的优质保险宣传内容</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 示例1：重疾险 -->
+                <div class="bg-neutral rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-custom">
+                    <div class="h-48 bg-gray-200 overflow-hidden">
+                        <img src="https://picsum.photos/seed/family1/600/400" alt="重疾险宣传图片示例，展示幸福家庭" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-3">重疾险</div>
+                        <h3 class="text-lg font-semibold mb-2">安康一生重疾保障计划</h3>
+                        <p class="text-gray-600 text-sm mb-4">50万保额，每年仅需5200元，即可获得120种重疾+20种中症+30种轻症全面保障，给家人一份安心，给自己一份底气。</p>
+                        <div class="text-xs text-gray-500">风格：情感型</div>
+                    </div>
+                </div>
+                
+                <!-- 示例2：储蓄险 -->
+                <div class="bg-neutral rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-custom">
+                    <div class="h-48 bg-gray-200 overflow-hidden">
+                        <img src="https://picsum.photos/seed/couple2/600/400" alt="储蓄险宣传图片示例，展示夫妻规划未来" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-3">储蓄险</div>
+                        <h3 class="text-lg font-semibold mb-2">财富增长储蓄保险</h3>
+                        <p class="text-gray-600 text-sm mb-4">每年存10000元，连续存10年，第15年即可领取150000元。年化收益率3.5%，比银行定期高1.2%，安全稳健的理财选择。</p>
+                        <div class="text-xs text-gray-500">风格：数字型</div>
+                    </div>
+                </div>
+                
+                <!-- 示例3：医疗险 -->
+                <div class="bg-neutral rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-custom">
+                    <div class="h-48 bg-gray-200 overflow-hidden">
+                        <img src="https://picsum.photos/seed/parents3/600/400" alt="医疗险宣传图片示例，展示关爱父母" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-3">医疗险</div>
+                        <h3 class="text-lg font-semibold mb-2">全民医保补充计划</h3>
+                        <p class="text-gray-600 text-sm mb-4">每天不到1元钱，最高报销200万医疗费用。社保不报的它来报，进口药、靶向药全涵盖，解决看病贵的难题。</p>
+                        <div class="text-xs text-gray-500">风格：对比型</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fa fa-shield text-accent text-2xl"></i>
+                        <h3 class="text-xl font-bold">保险宣传生成器</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">专业的保险产品宣传内容生成工具，助力保险从业者提升营销效率</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-custom"><i class="fa fa-weixin text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-custom"><i class="fa fa-weibo text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-custom"><i class="fa fa-qq text-xl"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">快速链接</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition-custom">功能特点</a></li>
+                        <li><a href="#generator" class="text-gray-400 hover:text-white transition-custom">开始生成</a></li>
+                        <li><a href="#examples" class="text-gray-400 hover:text-white transition-custom">示例展示</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">联系我们</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center text-gray-400"><i class="fa fa-envelope-o mr-2"></i> contact@insgenerator.com</li>
+                        <li class="flex items-center text-gray-400"><i class="fa fa-phone mr-2"></i> 400-123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+                <p>© 2023 保险宣传生成器 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2');
+                navbar.classList.remove('py-4');
+                navbar.classList.add('bg-white/95');
+                navbar.classList.add('backdrop-blur-sm');
+            } else {
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2');
+                navbar.classList.remove('bg-white/95');
+                navbar.classList.remove('backdrop-blur-sm');
+            }
+        });
+        
+        // 移动端菜单切换
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // 关闭移动端菜单（如果打开）
+                document.getElementById('mobile-menu').classList.add('hidden');
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 获取表单数据
+        function getFormData() {
+            const productType = document.getElementById('product-type').value;
+            const productName = document.getElementById('product-name').value;
+            const coverageAmount = document.getElementById('coverage-amount').value;
+            const premium = document.getElementById('premium').value;
+            const coveragePeriod = document.getElementById('coverage-period').value;
+            const coverageContent = document.getElementById('coverage-content').value;
+            const style = document.querySelector('input[name="style"]:checked');
+            
+            return {
+                productType,
+                productName,
+                coverageAmount,
+                premium,
+                coveragePeriod,
+                coverageContent,
+                style: style ? style.value : null
+            };
+        }
+        
+        // 验证表单数据
+        function validateFormData(data) {
+            return data.productType && data.productName && data.coverageAmount && 
+                   data.premium && data.coveragePeriod && data.coverageContent && data.style;
+        }
+        
+        // 生成文案
+        function generateCopy(data) {
+            let generatedCopy = '';
+            const styleValue = data.style;
+            
+            if (styleValue === 'narrative') {
+                generatedCopy = `${data.productName} —— 为您的生活保驾护航。每年仅需${data.premium}元，即可获得${data.coverageAmount}元的保障，期限长达${getPeriodText(data.coveragePeriod)}。无论面对何种风险，这份保障都将成为您和家人最坚实的后盾，让生活更安心。`;
+            } else if (styleValue === 'comparative') {
+                generatedCopy = `还在为高昂的医疗费用担忧？${data.productName}提供${data.coverageAmount}元保额，每年仅${data.premium}元，比同类产品便宜15%。${data.coverageContent}，性价比更高，保障更全面。`;
+            } else if (styleValue === 'numeric') {
+                generatedCopy = `${data.productName}核心数据：
+- 保额：${data.coverageAmount}元
+- 年保费：${data.premium}元
+- 保障期限：${getPeriodText(data.coveragePeriod)}
+- 核心保障：${data.coverageContent}
+每天不到${(data.premium/365).toFixed(2)}元，获得全方位保障。`;
+            } else if (styleValue === 'emotional') {
+                generatedCopy = `爱家人，就给他们最坚实的守护。${data.productName}，${data.coverageAmount}元保额，${getPeriodText(data.coveragePeriod)}的陪伴，${data.coverageContent}。每年${data.premium}元，不多的支出，却是对家人满满的爱与责任。`;
+            } else if (styleValue === 'professional') {
+                generatedCopy = `${data.productName}是一款针对${getProductTypeText(data.productType)}设计的保险产品，提供${data.coverageAmount}元保障额度，保险期间为${getPeriodText(data.coveragePeriod)}，年缴保费${data.premium}元。保障范围包括${data.coverageContent}，符合行业监管要求，为被保险人提供专业风险保障。`;
+            } else if (styleValue === 'concise') {
+                generatedCopy = `${data.productName}：${data.coverageAmount}元保额，年缴${data.premium}元，保${getPeriodText(data.coveragePeriod)}。${data.coverageContent}。性价比之选。`;
+            }
+            
+            return generatedCopy;
+        }
+        
+        // 生成图片URL
+        function generateImageUrl(data, randomSeed = false) {
+            let imageSeed = data.productType + data.productName;
+            // 如果需要随机种子，添加随机数确保图片不同
+            if (randomSeed) {
+                imageSeed += Math.random().toString(36).substring(2, 10);
+            }
+            // 使用包含人物的图片集合
+            const peopleCollections = ['family', 'couple', 'parents', 'youngpeople', 'business'];
+            const randomCollection = peopleCollections[Math.floor(Math.random() * peopleCollections.length)];
+            return `https://picsum.photos/seed/${randomCollection}-${imageSeed}/600/400`;
+        }
+        
+        // 生成全部内容
+        function generateAll() {
+            const formData = getFormData();
+            
+            if (!validateFormData(formData)) {
+                alert('请填写完整的产品信息');
+                return;
+            }
+            
+            // 显示加载状态
+            document.getElementById('result-initial').classList.add('hidden');
+            document.getElementById('result-content').classList.add('hidden');
+            document.getElementById('result-loading').classList.remove('hidden');
+            
+            // 模拟生成过程
+            setTimeout(function() {
+                // 隐藏加载状态，显示结果
+                document.getElementById('result-loading').classList.add('hidden');
+                document.getElementById('result-content').classList.remove('hidden');
+                
+                // 生成并显示文案
+                const copy = generateCopy(formData);
+                document.getElementById('generated-copy').textContent = copy;
+                
+                // 生成并显示图片
+                const imageUrl = generateImageUrl(formData);
+                document.getElementById('generated-image').src = imageUrl;
+                
+            }, 2000);
+        }
+        
+        // 单独重新生成文案
+        function regenerateCopy() {
+            const formData = getFormData();
+            
+            if (!validateFormData(formData)) {
+                alert('请填写完整的产品信息');
+                return;
+            }
+            
+            // 显示文案加载状态
+            document.getElementById('copy-loading').classList.remove('hidden');
+            
+            // 模拟生成过程
+            setTimeout(function() {
+                // 隐藏加载状态
+                document.getElementById('copy-loading').classList.add('hidden');
+                
+                // 生成并显示新文案
+                const newCopy = generateCopy(formData);
+                document.getElementById('generated-copy').textContent = newCopy;
+                
+            }, 1500);
+        }
+        
+        // 单独重新生成图片
+        function regenerateImage() {
+            const formData = getFormData();
+            
+            if (!validateFormData(formData)) {
+                alert('请填写完整的产品信息');
+                return;
+            }
+            
+            // 显示图片加载状态
+            document.getElementById('image-loading').classList.remove('hidden');
+            
+            // 模拟生成过程
+            setTimeout(function() {
+                // 隐藏加载状态
+                document.getElementById('image-loading').classList.add('hidden');
+                
+                // 生成并显示新图片（使用随机种子确保图片不同）
+                const newImageUrl = generateImageUrl(formData, true);
+                document.getElementById('generated-image').src = newImageUrl;
+                
+            }, 1500);
+        }
+        
+        // 事件监听 - 生成按钮
+        document.getElementById('generate-btn').addEventListener('click', generateAll);
+        
+        // 事件监听 - 重新生成文案按钮
+        document.getElementById('regenerate-copy-btn').addEventListener('click', regenerateCopy);
+        
+        // 事件监听 - 重新生成图片按钮
+        document.getElementById('regenerate-image-btn').addEventListener('click', regenerateImage);
+        
+        // 事件监听 - 重新生成全部按钮
+        document.getElementById('regenerate-all-btn').addEventListener('click', generateAll);
+        
+        // 复制文案按钮
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const copyText = document.getElementById('generated-copy').textContent;
+            navigator.clipboard.writeText(copyText).then(function() {
+                // 显示复制成功的反馈
+                const originalText = document.getElementById('copy-btn').innerHTML;
+                document.getElementById('copy-btn').innerHTML = '<i class="fa fa-check mr-1"></i> 已复制';
+                setTimeout(function() {
+                    document.getElementById('copy-btn').innerHTML = originalText;
+                }, 2000);
+            });
+        });
+        
+        // 下载图片按钮
+        document.getElementById('download-btn').addEventListener('click', function() {
+            const imageUrl = document.getElementById('generated-image').src;
+            const a = document.createElement('a');
+            a.href = imageUrl;
+            a.download = 'insurance-ad.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+        
+        // 辅助函数：获取产品类型文本
+        function getProductTypeText(type) {
+            const types = {
+                'savings': '储蓄需求',
+                'critical-illness': '重大疾病保障',
+                'medical': '医疗费用报销',
+                'life': '人寿保障',
+                'accident': '意外风险',
+                'other': '综合风险'
+            };
+            return types[type] || type;
+        }
+        
+        // 辅助函数：获取保障期限文本
+        function getPeriodText(period) {
+            const periods = {
+                '1-year': '1年',
+                '5-years': '5年',
+                '10-years': '10年',
+                '20-years': '20年',
+                '30-years': '30年',
+                'lifetime': '终身'
+            };
+            return periods[period] || period;
+        }
+    </script>
+</body>
+</html>
